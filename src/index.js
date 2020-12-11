@@ -10,9 +10,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.get('/newFeeds',(req,res)=>{
-    const limit=req.body.limit;
-    const offset=req.body.offseet;
-    res.send({newsArticleModel});
+    const limit=!is.NaN(req.query.limit)|| req.query.limit?10:parseInt(req.query.limit);
+    const offset=!is.NaN(req.query.offset)|| req.query.offset?10:parseInt(req.query.offset);
+    newsArticleModel.find().limit(limit).skip(offset).then((ele)=>{
+        res.send(ele);
+    })
 })
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))
